@@ -289,15 +289,6 @@ input:focus,textarea:focus{border-color:var(--accent)}
   .link-btn.primary:hover{ transform:none !important; }
 }
 
-.subtle-heading{
-  font-size:1rem;
-  font-weight:600;
-  color:var(--muted);
-  margin-bottom:12px;
-  text-transform:uppercase;
-  letter-spacing:.05em;
-}
-
 .link-btn.primary{
   position:relative;
 }
