@@ -288,4 +288,27 @@ input:focus,textarea:focus{border-color:var(--accent)}
   letter-spacing:.05em;
 }
 
+.link-btn.primary{
+  position:relative;
+}
+.link-btn.primary::after{
+  content:attr(aria-label);
+  position:absolute;
+  bottom:-32px; left:50%;
+  transform:translateX(-50%);
+  background:var(--panel);
+  color:var(--text);
+  font-size:.75rem;
+  padding:4px 8px;
+  border-radius:6px;
+  white-space:nowrap;
+  opacity:0; pointer-events:none;
+  transition:.2s ease;
+  box-shadow:var(--shadow);
+}
+.link-btn.primary:hover::after{
+  opacity:1;
+}
+
+
 
