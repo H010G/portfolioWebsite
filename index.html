@@ -256,6 +256,56 @@
     } else {
       document.querySelectorAll('.reveal').forEach(el => el.classList.add('reveal-in'));
     }
+
+    (function(){
+    const els = Array.from(document.querySelectorAll('.reveal'));
+    if (!els.length) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // If reduced motion, just show everything (accessibility-friendly)
+    if (prefersReduced) {
+      els.forEach(el => el.classList.add('reveal-in'));
+      return;
+    }
+
+    // If IntersectionObserver is missing or errors, use a simple scroll fallback
+    function fallbackReveal() {
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      els.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < vh * 0.88) el.classList.add('reveal-in');
+      });
+    }
+
+    try {
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('reveal-in');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.01 });
+        els.forEach(el => io.observe(el));
+
+        // Also run a quick pass in case elements are already in view on load
+        fallbackReveal();
+        window.addEventListener('load', fallbackReveal, { once: true });
+      } else {
+        // No IO support: use fallback + scroll/resize hooks
+        fallbackReveal();
+        window.addEventListener('scroll', fallbackReveal, { passive: true });
+        window.addEventListener('resize', fallbackReveal);
+      }
+    } catch (e) {
+      console.warn('Reveal observer error:', e);
+      fallbackReveal();
+      window.addEventListener('scroll', fallbackReveal, { passive: true });
+      window.addEventListener('resize', fallbackReveal);
+    }
+  })();
   </script>
 </body>
 </html>
