@@ -223,6 +223,17 @@ input:focus,textarea:focus{border-color:var(--accent)}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
 .reveal.reveal-in{opacity:1;transform:none}
 
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .6s ease, transform .6s ease;
+  will-change: opacity, transform;
+}
+.reveal.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
 /* ===========================================================
    Responsive
    =========================================================== */
